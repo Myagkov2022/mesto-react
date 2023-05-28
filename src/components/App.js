@@ -13,13 +13,13 @@ function App() {
     const [selectedCard, setSelectedCard] = React.useState({});
 
     function handleEditAvatarClick () {
-        setIsEditAvatarPopupOpen(!isEditAvatarPopupOpen)
+        setIsEditAvatarPopupOpen(true)
     }
     function handleEditProfileClick () {
-        setIsEditProfilePopupOpen(!isEditProfilePopupOpen)
+        setIsEditProfilePopupOpen(true)
     }
     function handleAddPlaceClick () {
-        setIsAddPlacePopupOpen(!isAddPlacePopupOpen)
+        setIsAddPlacePopupOpen(true)
     }
 
     function closeAllPopups () {
@@ -42,33 +42,57 @@ function App() {
             onCardClick={handleCardClick}
         />
         <Footer/>
-          <PopupWithForm name={'profile'} title={'Редактировать профиль'} isOpen={isEditProfilePopupOpen} onClose={closeAllPopups}>
+          <PopupWithForm
+              name={'profile'}
+              title={'Редактировать профиль'}
+              isOpen={isEditProfilePopupOpen}
+              onClose={closeAllPopups}
+              buttonText={"Сохранить"}
+          >
                       <input id="popup-name" name="name" type="text" className="form__input" placeholder="Введите свое имя"
                              minLength="2" maxLength="40" required/>
                         <span id="popup-name-error" className="form__input-error"></span>
                         <input id="popup-description" name="about" type="text" className="form__input" placeholder="О себе"
                                minLength="2" maxLength="200" required/>
                           <span id="popup-description-error" className="form__input-error"></span>
-                          <button className="form__submit" type="submit">Сохранить</button>
           </PopupWithForm>
-          <PopupWithForm name={'new-element'} title={'Новое место'} isOpen={isAddPlacePopupOpen} onClose={closeAllPopups}>
+          <PopupWithForm
+              name={'new-element'}
+              title={'Новое место'}
+              isOpen={isAddPlacePopupOpen}
+              onClose={closeAllPopups}
+              buttonText={"Сохранить"}
+          >
                       <input id="popup-title" name="name" type="text" className="form__input" placeholder="Название"
                              minLength="2" maxLength="30" required/>
                         <span id="popup-title-error" className="form__input-error"></span>
                         <input id="popup-link" name="link" type="url" className="form__input" placeholder="Ссылка на картинку"
                                required/>
                           <span id="popup-link-error" className="form__input-error"></span>
-                          <button className="form__submit" type="submit">Сохранить</button>
           </PopupWithForm>
-          <PopupWithForm name={'avatar'} title={'Обновить аватар'} isOpen={isEditAvatarPopupOpen} onClose={closeAllPopups}>
-                      <input id="popup-avatar" name="avatar" type="url" className="form__input"
-                             placeholder="Ссылка на картинку" required/>
+          <PopupWithForm
+              name={'avatar'}
+              title={'Обновить аватар'}
+              isOpen={isEditAvatarPopupOpen}
+              onClose={closeAllPopups}
+              buttonText={"Сохранить"}
+          >
+              <input
+                  id="popup-avatar"
+                  name="avatar"
+                  type="url"
+                  className="form__input"
+                  placeholder="Ссылка на картинку"
+                  required
+              />
                         <span id="popup-avatar-error" className="form__input-error"></span>
-                        <button className="form__submit" type="submit">Сохранить</button>
           </PopupWithForm>
-          <PopupWithForm name={'delete-element'} title={'Вы уверены'} >
-              <button className="form__submit" type="submit">Да</button>*/}
-          </PopupWithForm>
+          <PopupWithForm
+              name={'delete-element'}
+              title={'Вы уверены'}
+              buttonText={"Да"}
+          />
+
           <ImagePopup onClose={closeAllPopups} card={selectedCard}/>
       </div>
   );
