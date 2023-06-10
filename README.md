@@ -23,7 +23,7 @@
 * JavaScript
 * WebPack + Babel
 * REST API 
-* React JS
+* React JS (React.Context, ref)
 
 ## Figma дизайн проекта
 * [Ссылка на макет в Figma (9 спринт)](https://www.figma.com/file/PSdQFRHoxXJFs2FH8IXViF/JavaScript.-Sprint-9?node-id=0-1&t=yAKX5wpHXs3xvujG-0)
