@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState, useEffect} from "react";
 import Header from "./Header";
 import Main from "./Main";
 import Footer from "./Footer";
@@ -11,23 +11,23 @@ import AddPlacePopup from "./AddPlacePopup";
 import DeleteCardPopup from "./DeleteCardPopup";
 
 function App() {
-    const [cards, setCards] = React.useState([]);
-    const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = React.useState(false);
-    const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = React.useState(false);
-    const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = React.useState(false);
-    const [isDeleteCardPopupOpen, setIsDeleteCardPopupOpen] = React.useState(false);
-    const [selectedCard, setSelectedCard] = React.useState({});
-    const [deletedCard, setDeletedCard] = React.useState({});
-    const [currentUser, setCurrentUser] = React.useState({});
+    const [cards, setCards] = useState([]);
+    const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false);
+    const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = useState(false);
+    const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = useState(false);
+    const [isDeleteCardPopupOpen, setIsDeleteCardPopupOpen] = useState(false);
+    const [selectedCard, setSelectedCard] = useState({});
+    const [deletedCard, setDeletedCard] = useState('');
+    const [currentUser, setCurrentUser] = useState({});
 
-    React.useEffect(() => {
+    useEffect(() => {
         Promise.all([api.getInitialCards(), api.getUserInfo()])
             .then(([initialCards, user]) => {
                 setCards(initialCards);
                 setCurrentUser(user)
             })
             .catch((err) => {
-                console.log(`Ошибка: ${err}`);
+                console.log(`Ошибка загрузки карточек:\n ${err.status} \n ${err.text}`);
             });
     },[])
 
@@ -66,7 +66,7 @@ function App() {
                 setCards((state) => state.map((c) => c._id === card._id ? newCard : c));
             })
             .catch(err => {
-                console.log(`Ошибка загрузки данных:\n ${err.text}`);
+                console.log(`Ошибка постановки/удаления лайка:\n ${err.status} \n ${err.text}`);
             });
     }
 
@@ -77,13 +77,20 @@ function App() {
               setCards((state) => state.filter((c) => c._id !== deletedCard));
               closeAllPopups()
           })
+            .catch(err => {
+                console.log(`Ошибка удаление карточки:\n ${err.status} \n ${err.text}`);
+            });
     }
 
     function handleUpdateUser(userInfo) {
-         api.patchUserInfo(userInfo).then(res => {
-             setCurrentUser(res)
-             closeAllPopups()
+         api.patchUserInfo(userInfo)
+             .then(res => {
+                 setCurrentUser(res)
+                 closeAllPopups()
          })
+             .catch(err => {
+                 console.log(`Ошибка обновления данных пользователя:\n ${err.status} \n ${err.text}`);
+             });
     }
 
     function handleUpdateAvatar(avatar) {
@@ -92,6 +99,9 @@ function App() {
                 setCurrentUser(res)
                 closeAllPopups()
         })
+            .catch(err => {
+                console.log(`Ошибка обновления аватара пользователя:\n ${err.status} \n ${err.text}`);
+            });
     }
 
     function handleAddPlaceSubmit(card) {
@@ -100,6 +110,9 @@ function App() {
                 setCards([res, ...cards]);
                 closeAllPopups()
             })
+            .catch(err => {
+                console.log(`Ошибка добавления нового места:\n ${err.status} \n ${err.text}`);
+            });
     }
 
   return (
